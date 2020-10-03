@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void go2(View v) {
-
+        new Job2Task().execute(3);  // 產生Job2Task物件並執行execute方法，將秒數3傳入
     }
 
     public void go3(View v) {
@@ -53,5 +53,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Job2Task 類別 10-6-3 需求2
+    // 在畫面上按下GO2按鈕，工作n秒後，結束後在 TextView 中顯示DONE2
+    class Job2Task extends AsyncTask<Integer, Void, Void> {
+        // 非同步工作執行的工作方法，因參數宣告為Integer，傳入的值放在
+        // 參數 integers，資料型態為整數陣列，傳入的3即放在integers[0]
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            try {
+                Thread.sleep(integers[0] * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            TextView info = findViewById(R.id.info);
+            info.setText("DONE2");
+        }
+    }
 }
