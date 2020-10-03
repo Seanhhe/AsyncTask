@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void go3(View v) {
-
+        new Job3Task().execute(6);
     }
 
     // 在畫面按下GO1按鈕，工作5秒鐘，結束後在TextView中顯示"DONE"
@@ -75,4 +75,39 @@ public class MainActivity extends AppCompatActivity {
             info.setText("DONE2");
         }
     }
+
+    // 10-6-4 需求3 - Job3Task類別
+    // 按下GO3按鈕，延遲六秒，需每秒更新秒數到TextView
+    class Job3Task extends AsyncTask<Integer, Integer, Void> {
+        private TextView info;
+        public Job3Task() {
+            info = findViewById(R.id.info);
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            for (int i = 0; i < integers[0]; i++) {
+                publishProgress(i); // 使用此AsyncTask的方法，會自動執行 onProgressUpdate(Progress...)
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            info.setText(String.valueOf(values[0]));
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            info.setText("DONE3");
+        }
+    }
+
 }
